@@ -10,6 +10,7 @@ import { DISHES } from '../shared/dishes';
 import { COMMENTS } from '../shared/comments';
 import { PROMOTIONS } from '../shared/promotions';
 import { LEADERS } from '../shared/leaders';
+import { addComment } from '../redux/ActionCreators';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
 
@@ -21,6 +22,12 @@ const mapStateToProps = state => {
       leaders: state.leaders
     }
   }
+const mapDispatchToProps = dispatch => ({
+  
+    addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment))
+  
+  });
+
 class Main extends Component {
 
   constructor(props) {
@@ -46,8 +53,11 @@ class Main extends Component {
       }
     const DishWithId = ({match}) => {
         return(
-            <DishDetail dish={this.props.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]} 
-              comments={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))} />
+            
+      <DishDetail   dish={this.props.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]}
+                    comments={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))}
+                    addComment={this.props.addComment}
+      />
         );
       };
       return (
@@ -69,4 +79,4 @@ class Main extends Component {
   }
 }
 
-export default withRouter(connect(mapStateToProps)(Main));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

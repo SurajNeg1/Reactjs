@@ -4,7 +4,7 @@ import { Card, CardImg, CardText,CardBody,
 import { Link } from 'react-router-dom';
 import {Control , LocalForm, Errors} from 'react-redux-form';
 
-    function RenderComments({comments, dishId}){
+    function RenderComments({comments,addComment, dishId}){
         if (comments==null){
             return(
                 <div></div>        
@@ -25,7 +25,7 @@ import {Control , LocalForm, Errors} from 'react-redux-form';
                 <ul className="list-unstyled">
                     {cmnts}
                 </ul>
-                <CommentForm dishId={dishId}  />
+                <CommentForm dishId={dishId} addComment={addComment} />
             </div>
         );
 
@@ -74,7 +74,8 @@ import {Control , LocalForm, Errors} from 'react-redux-form';
                     </div>
                     <div className="col-12 col-md m-1">
                         <RenderComments comments={props.comments}
-                            dishId={props.dish.id} />
+                            dishId={props.dish.id} 
+                            addComment={props.addComment}/>
                     </div>
                 </div>
             </div>
@@ -99,9 +100,8 @@ import {Control , LocalForm, Errors} from 'react-redux-form';
             });
         }
         handleSubmit(values){
-            console.log('Current State is: ' + JSON.stringify(values));
-            alert('Current State is: ' + JSON.stringify(values));
-            //event.preventDefault();
+            this.toggleModal();
+            this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
         }
         render(){
             return(
