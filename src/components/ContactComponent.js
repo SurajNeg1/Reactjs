@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Breadcrumb, BreadcrumbItem,
     Button, Row, Col, Label } from 'reactstrap';
-import { Control, Form, Errors, actions  } from 'react-redux-form';
+import { Control, Form, Errors} from 'react-redux-form';
 import { Link } from 'react-router-dom';
 
 const required = (val) => val && val.length;
@@ -13,40 +13,19 @@ const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val
 class Contact extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            firstname: '',
-            lastname: '',
-            telnum: '',
-            email: '',
-            agree: false,
-            contactType: 'Tel.',
-            message: '', 
-            touched  : {
-                firstname :false,
-                lastname: false,
-                telnum: false,
-                email: false,  
-            }
-        };
-
-        this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-    
-        this.setState({
-          [name]: value
-        });
-    }
-
     handleSubmit(value) {
-        console.log('Current State is: ' + JSON.stringify(value));
-        alert('Current State is: ' + JSON.stringify(value));
+        this.props.postFeedback(
+            value.firstname,
+            value.lastname,
+            value.telnum,
+            value.email,
+            value.agree,
+            value.contactType,
+            value.message
+          );
         this.props.resetFeedbackForm();
         // event.preventDefault();
     }
